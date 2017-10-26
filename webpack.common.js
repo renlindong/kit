@@ -2,6 +2,7 @@
 
 const path = require('path')
 const fs = require('fs')
+const webpack = require('webpack')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
@@ -21,7 +22,7 @@ htmls.forEach((page) => {
         title: page,
         filename: `html/${page}.html`,
         template: path.resolve(__dirname, `src/html/${page}.html`),
-        chunks: [page, 'commons']
+        chunks: [page, 'common']
     })
     HTMLPlugins.push(htmlPlugin)
     Entries[page] = path.resolve(__dirname, `src/js/entryjs/${page}.js`)
@@ -31,7 +32,10 @@ module.exports = {
     entry: Entries,
     plugins: [
         new CleanWebpackPlugin(['dist']),
-        new ExtractTextPlugin('css/style.css'),
+        new ExtractTextPlugin('css/[name].css'),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'common'
+        }),
         ...HTMLPlugins
     ],
     output: {

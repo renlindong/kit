@@ -1,3 +1,3 @@
 export default function printMe() {
-    console.log('这是home第三节课页面')
+    console.log('我是你的 面')
 }
